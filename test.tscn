@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpj5chc3oslpr"]
+
+[ext_resource type="TileSet" uid="uid://cvybiv4kqocla" path="res://Assets/pico8.tres" id="1_3hh0t"]
+[ext_resource type="PackedScene" uid="uid://dhgatk0xaee0v" path="res://Assets/player.tscn" id="2_4o0sj"]
+[ext_resource type="PackedScene" uid="uid://cyl81q57f0qx2" path="res://Scenes/camera.tscn" id="3_if4h5"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="." groups=["ground"]]
+tile_set = ExtResource("1_3hh0t")
+format = 2
+layer_0/tile_data = PackedInt32Array(131072, 262144, 2, 131073, 262144, 2, 131074, 262144, 2, 131075, 262144, 2, 131076, 262144, 2, 131077, 262144, 2, 131078, 262144, 2, 131079, 262144, 2, 131080, 262144, 2, 131081, 262144, 2, 131082, 262144, 2, 131083, 262144, 2, 131084, 262144, 2, 131085, 262144, 2, 131086, 262144, 2, 131087, 262144, 2, 65551, 262144, 2, 15, 262144, 2, -65521, 262144, 2, -65520, 262144, 2, -65519, 262144, 2, -65518, 262144, 2, -65517, 262144, 2, -65516, 262144, 2, -65515, 262144, 2, -65514, 262144, 2, -65513, 262144, 2, -65512, 262144, 2, -65511, 262144, 2, -65510, 262144, 2, -65509, 262144, 2, -65508, 262144, 2, -65507, 262144, 2, -65506, 262144, 2)
+
+[node name="Camera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_if4h5")]
+zoom = Vector2(3.995, 3.995)
+player = NodePath("../Player")
+
+[node name="Player" parent="." instance=ExtResource("2_4o0sj")]
+position = Vector2(24, 0)

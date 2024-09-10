@@ -1,0 +1,83 @@
+[gd_scene load_steps=9 format=3 uid="uid://bwktujbfadlfs"]
+
+[ext_resource type="Script" path="res://Scipts/enemy.gd" id="2_fty84"]
+[ext_resource type="PackedScene" uid="uid://bovq5nweho4yv" path="res://Scenes/killzone.tscn" id="3_5vly4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o50dt"]
+size = Vector2(8, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1lbav"]
+size = Vector2(6, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5sl2t"]
+region = Rect2(8, 48, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ie7wc"]
+region = Rect2(16, 48, 8, 7)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kbvn8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5sl2t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ie7wc")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5e1bx"]
+radius = 1.0
+
+[node name="Slime" type="Node2D" groups=["enemy"]]
+
+[node name="enemyBody2D" type="CharacterBody2D" parent="."]
+script = ExtResource("2_fty84")
+
+[node name="killzone" parent="enemyBody2D" instance=ExtResource("3_5vly4")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D/killzone"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_o50dt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_1lbav")
+
+[node name="RayCastRight" type="RayCast2D" parent="enemyBody2D"]
+position = Vector2(0, 2)
+target_position = Vector2(7, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="enemyBody2D"]
+position = Vector2(0, 2)
+target_position = Vector2(-7, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="enemyBody2D"]
+sprite_frames = SubResource("SpriteFrames_kbvn8")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.780719
+
+[node name="groundCheck" type="Area2D" parent="enemyBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D/groundCheck" groups=["ground"]]
+position = Vector2(4, 7)
+shape = SubResource("CircleShape2D_5e1bx")
+
+[node name="groundCheck2" type="Area2D" parent="enemyBody2D"]
+position = Vector2(2, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D/groundCheck2" groups=["ground"]]
+position = Vector2(-6, 7)
+shape = SubResource("CircleShape2D_5e1bx")
+
+[node name="footsteps" type="AudioStreamPlayer2D" parent="."]
+volume_db = -10.0
+autoplay = true
+
+[connection signal="animation_finished" from="enemyBody2D/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_exited" from="enemyBody2D/groundCheck" to="." method="_on_ground_check_body_exited"]
+[connection signal="body_exited" from="enemyBody2D/groundCheck2" to="." method="_on_ground_check_body_exited"]

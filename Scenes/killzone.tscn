@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bovq5nweho4yv"]
+
+[ext_resource type="Script" path="res://Scipts/killzoneScript.gd" id="1_ricye"]
+
+[node name="killzone" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_ricye")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[node name="deathSFX" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
