@@ -89,7 +89,7 @@ func _physics_process(delta):
 				velocity.x += (direction * SPEED)*0.01
 		
 	else:
-		if is_on_floor():
+		if is_on_floor() and dashTime <= 0:
 			velocity.x = 0
 		else:
 			velocity.x *= 0.95
