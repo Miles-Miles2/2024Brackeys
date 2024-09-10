@@ -1,13 +1,17 @@
 extends CharacterBody2D
 
 
-const SPEED = 90.0
+@export var SPEED = 90.0
 const JUMP_VELOCITY = -200.0
+@export var DASH_VELOCITY: float
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var timer = $Timer
 @onready var jumpSFX = $jumpSFX
 
 var addVelocityDebounce: int = 0
+
+var dashTime = 0
+var canDash = false
 
 @export var platformSpeedMultiplyer = 1
 @export var enemySpeedMultiplyer = 1
@@ -27,12 +31,18 @@ func _physics_process(delta):
 	# Add the gravity.
 	addVelocityDebounce = max(0, addVelocityDebounce - 1)
 	
+	var inputVector = Input.get_vector("move_left", "move_right", "jump", "down")
+	
+	if dashTime > 0:
+		dashTime -= delta
+	
 	if is_on_floor() and previouslyInAir:
 		$CPUParticles2D.emitting = true
 		previouslyInAir = false
 	
-	if not is_on_floor():
-		if velocity.y > 0:
+	if not is_on_floor() and dashTime <= 0:
+		#make falling after dashing slower
+		if velocity.y > 0 and not canDash == false:
 			velocity.y += gravity * delta * 1.2
 		else:
 			velocity.y += gravity * delta
@@ -43,7 +53,7 @@ func _physics_process(delta):
 		jumpSFX.play()
 		velocity.y += JUMP_VELOCITY
 		
-	if (Input.is_action_pressed("jump") and not is_on_floor()):
+	if (Input.is_action_pressed("jump") and not is_on_floor() and dashTime <= 0):
 		velocity.y -= gravity*0.4*delta
 		
 	# Get the input direction and handle the movement/deceleration.
@@ -57,6 +67,7 @@ func _physics_process(delta):
 		
 		
 	if is_on_floor():
+		canDash = true
 		if direction == 0:
 			pass
 			animated_sprite.play("idle")	
@@ -68,11 +79,11 @@ func _physics_process(delta):
 		
 	
 	
-	if direction:
+	if direction and dashTime <= 0:
 		if is_on_floor():
 			velocity.x = direction * SPEED
 		else:
-			if abs(velocity.x + ((direction * SPEED)*0.01)) < SPEED:
+			if abs(velocity.x + (direction * SPEED*0.1)) < SPEED:
 				velocity.x += direction * SPEED * 0.1 #min((direction * SPEED)*0.01, direction*SPEED - velocity.x)
 			elif abs(velocity.x	 + (direction * SPEED)*0.01) < abs(velocity.x):
 				velocity.x += (direction * SPEED)*0.01
@@ -82,6 +93,14 @@ func _physics_process(delta):
 			velocity.x = 0
 		else:
 			velocity.x *= 0.95
+			
+	#   DASH
+	if Input.is_action_just_pressed("dash") and canDash:
+		dashTime = 0.05
+		velocity.y = 0
+		velocity.x = 0
+		velocity += inputVector * DASH_VELOCITY
+		canDash = false
 
 	move_and_slide()
 	
