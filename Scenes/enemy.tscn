@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b3s2nbktrv0ta" path="res://Assets/mummy_sprite_sheet_by_lightweightyeahbuddy_dg753r4.png" id="3_wupmx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o50dt"]
-size = Vector2(5.33594, 7.39844)
+size = Vector2(5.54688, 7.67969)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1lbav"]
 size = Vector2(5.34375, 7.44531)
@@ -78,14 +78,14 @@ animations = [{
 radius = 1.0
 
 [node name="Slime" type="Node2D" groups=["enemy"]]
+script = ExtResource("2_fty84")
 
 [node name="enemyBody2D" type="CharacterBody2D" parent="."]
-script = ExtResource("2_fty84")
 
 [node name="killzone" parent="enemyBody2D" instance=ExtResource("3_5vly4")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D/killzone"]
-position = Vector2(-0.139839, 0.0976534)
+position = Vector2(-0.18281, 0.078908)
 shape = SubResource("RectangleShape2D_o50dt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D"]
@@ -105,8 +105,7 @@ position = Vector2(0, -1)
 scale = Vector2(0.0479006, 0.0443548)
 sprite_frames = SubResource("SpriteFrames_inglk")
 autoplay = "default"
-frame_progress = 0.833333
-flip_h = true
+frame_progress = 0.512142
 
 [node name="groundCheck" type="Area2D" parent="enemyBody2D"]
 
