@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bs4ounfe3m5sn"]
+
+[ext_resource type="Texture2D" uid="uid://jwcad1ya4vio" path="res://Assets/sand.png" id="1_mhv8t"]
+
+[node name="Sand" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_mhv8t")

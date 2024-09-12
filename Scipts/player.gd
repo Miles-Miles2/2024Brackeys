@@ -7,14 +7,21 @@ const JUMP_VELOCITY = -200.0
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var timer = $Timer
 @onready var jumpSFX = $jumpSFX
+@export var SPEED_MODIFIER = 1
+@export var MAX_QUICKSAND_SPEED: float
+
+
 
 var addVelocityDebounce: int = 0
 
+#dash
 var dashTime = 0
 var canDash = false
 
-@export var platformSpeedMultiplyer = 1
-@export var enemySpeedMultiplyer = 1
+#quicksand
+var isInQuicksand: bool = false
+var normalMovement: bool = true
+
 #@onready var animation_player = $AnimationPlayer
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -31,6 +38,8 @@ func _physics_process(delta):
 	# Add the gravity.
 	addVelocityDebounce = max(0, addVelocityDebounce - 1)
 	
+	
+	
 	var inputVector = Input.get_vector("move_left", "move_right", "jump", "down")
 	
 	if dashTime > 0:
@@ -40,12 +49,12 @@ func _physics_process(delta):
 		$CPUParticles2D.emitting = true
 		previouslyInAir = false
 	
-	if not is_on_floor() and dashTime <= 0:
+	if not is_on_floor() and dashTime <= 0 and normalMovement:
 		#make falling after dashing slower
 		if velocity.y > 0 and not canDash == false:
-			velocity.y += gravity * delta * 1.2
+			velocity.y += gravity * delta * 1.2 * SPEED_MODIFIER
 		else:
-			velocity.y += gravity * delta
+			velocity.y += gravity * delta * SPEED_MODIFIER
 		previouslyInAir = true
 
 	# Handle jump.
@@ -53,7 +62,7 @@ func _physics_process(delta):
 		jumpSFX.play()
 		velocity.y += JUMP_VELOCITY
 		
-	if (Input.is_action_pressed("jump") and not is_on_floor() and dashTime <= 0):
+	if (Input.is_action_pressed("jump") and not is_on_floor() and dashTime <= 0 and normalMovement):
 		velocity.y -= gravity*0.4*delta
 		
 	# Get the input direction and handle the movement/deceleration.
@@ -78,28 +87,34 @@ func _physics_process(delta):
 		animated_sprite.play("jump")
 		
 	
+	if normalMovement:
+		if direction and dashTime <= 0:
+			if is_on_floor():
+				velocity.x = direction * SPEED * SPEED_MODIFIER
+			elif abs(velocity.x) < SPEED * SPEED_MODIFIER or abs(velocity.x + direction*delta*2000) < abs(velocity.x):
+				velocity.x += direction*delta*1000
+				
+				#OLD CODE - allow speedup past max speed
+				'''
+				if abs(velocity.x + (direction * SPEED*0.1)) < SPEED:
+					velocity.x += direction * SPEED * 0.1 #min((direction * SPEED)*0.01, direction*SPEED - velocity.x)
+				elif abs(velocity.x	 + (direction * SPEED)*0.01) < abs(velocity.x):
+					velocity.x += (direction * SPEED)*0.01
+				'''
+			
+		else:
+			if is_on_floor() and dashTime <= 0:
+				velocity.x = 0
 	
-	if direction and dashTime <= 0:
-		if is_on_floor():
-			velocity.x = direction * SPEED
-		elif abs(velocity.x) < SPEED or abs(velocity.x + direction*delta*2000) < abs(velocity.x):
-			velocity.x += direction*delta*1000
-			
-			#OLD CODE - allow speedup past max speed
-			'''
-			if abs(velocity.x + (direction * SPEED*0.1)) < SPEED:
-				velocity.x += direction * SPEED * 0.1 #min((direction * SPEED)*0.01, direction*SPEED - velocity.x)
-			elif abs(velocity.x	 + (direction * SPEED)*0.01) < abs(velocity.x):
-				velocity.x += (direction * SPEED)*0.01
-			'''
-		
-	else:
-		if is_on_floor() and dashTime <= 0:
-			velocity.x = 0
-			
+	if not normalMovement and isInQuicksand:
+		velocity.y += min(5, 15-velocity.y)
+		if Input.is_action_just_pressed("jump"):
+			velocity.y += JUMP_VELOCITY * 0.5
+		velocity.x += (direction*SPEED - velocity.x) * 0.2
+	
 	#movement damping
 	if dashTime <= 0:
-		if abs(velocity.x) > SPEED:
+		if abs(velocity.x) > SPEED * SPEED_MODIFIER:
 			velocity.x *= 0.9
 	
 	#   DASH
@@ -115,6 +130,16 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("reset"):
 		Engine.time_scale = 1.0 
 		get_tree().reload_current_scene()
+	
+	
+func enterQuicksand():
+	velocity.y = clamp(velocity.y, 1000, MAX_QUICKSAND_SPEED)
+	isInQuicksand = true
+	normalMovement = false
+	
+func exitQuicksand():
+	isInQuicksand = false
+	normalMovement = true
 	
 
 

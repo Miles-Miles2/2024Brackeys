@@ -79,7 +79,6 @@ z_index = 1
 collision_layer = 3
 script = ExtResource("1_4gsat")
 DASH_VELOCITY = 250.0
-MAX_QUICKSAND_SPEED = 20.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
