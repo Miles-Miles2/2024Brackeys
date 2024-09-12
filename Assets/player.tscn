@@ -1,0 +1,132 @@
+[gd_scene load_steps=10 format=3 uid="uid://dmrjvpo3pd0qh"]
+
+[ext_resource type="Script" path="res://Scipts/player.gd" id="1_4gsat"]
+[ext_resource type="Texture2D" uid="uid://k0sb7c72p5eb" path="res://Assets/tmpChar.png" id="2_kdvre"]
+[ext_resource type="AudioStream" uid="uid://b5wxxqfbtl5t" path="res://Audio/sfx_jump_07-80241.mp3" id="3_x1lgl"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ye5og"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kdvre")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kdvre")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kdvre")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q57gs"]
+size = Vector2(8, 7)
+
+[sub_resource type="Animation" id="Animation_wvi3e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_womsh"]
+resource_name = "slide"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ess8q"]
+_data = {
+"RESET": SubResource("Animation_wvi3e"),
+"slide": SubResource("Animation_womsh")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sc5cu"]
+radius = 1.0
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+z_index = 1
+collision_layer = 3
+script = ExtResource("1_4gsat")
+DASH_VELOCITY = 250.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -5)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_ye5og")
+animation = &"run"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_q57gs")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.7
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ess8q")
+}
+
+[node name="jumpSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_x1lgl")
+volume_db = -20.0
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_sc5cu")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(0, -1)
+emitting = false
+amount = 4
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.87
+randomness = 0.08
+emission_shape = 3
+emission_rect_extents = Vector2(3.75, 1)
+direction = Vector2(0, -1)
+spread = 30.45
+gravity = Vector2(0, 500)
+initial_velocity_min = 40.0
+initial_velocity_max = 60.0
+angle_min = -577.0
+angle_max = 402.0
+color = Color(0.596078, 0.6, 0.639216, 1)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

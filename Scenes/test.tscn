@@ -2,7 +2,7 @@
 
 [ext_resource type="TileSet" uid="uid://cvybiv4kqocla" path="res://Assets/pico8.tres" id="1_opwwk"]
 [ext_resource type="PackedScene" uid="uid://cyl81q57f0qx2" path="res://Scenes/camera.tscn" id="2_cg3hi"]
-[ext_resource type="PackedScene" uid="uid://dhgatk0xaee0v" path="res://Scenes/player.tscn" id="3_c55b0"]
+[ext_resource type="PackedScene" path="res://Assets/player.tscn" id="3_c55b0"]
 [ext_resource type="PackedScene" uid="uid://bwktujbfadlfs" path="res://Scenes/enemy.tscn" id="4_0u4w7"]
 
 [node name="Node2D" type="Node2D"]
