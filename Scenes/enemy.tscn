@@ -1,31 +1,76 @@
-[gd_scene load_steps=9 format=3 uid="uid://bwktujbfadlfs"]
+[gd_scene load_steps=16 format=3 uid="uid://bwktujbfadlfs"]
 
 [ext_resource type="Script" path="res://Scipts/enemy.gd" id="2_fty84"]
 [ext_resource type="PackedScene" uid="uid://bovq5nweho4yv" path="res://Scenes/killzone.tscn" id="3_5vly4"]
+[ext_resource type="Texture2D" uid="uid://b3s2nbktrv0ta" path="res://Assets/mummy_sprite_sheet_by_lightweightyeahbuddy_dg753r4.png" id="3_wupmx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o50dt"]
-size = Vector2(8, 11)
+size = Vector2(5.33594, 7.39844)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1lbav"]
-size = Vector2(6, 7)
+size = Vector2(5.34375, 7.44531)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5sl2t"]
-region = Rect2(8, 48, 8, 8)
+[sub_resource type="AtlasTexture" id="AtlasTexture_xxvu7"]
+atlas = ExtResource("3_wupmx")
+region = Rect2(0, 220, 259, 215)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ie7wc"]
-region = Rect2(16, 48, 8, 7)
+[sub_resource type="AtlasTexture" id="AtlasTexture_sfmb1"]
+atlas = ExtResource("3_wupmx")
+region = Rect2(259, 220, 259, 215)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_kbvn8"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_pu8a2"]
+atlas = ExtResource("3_wupmx")
+region = Rect2(518, 220, 259, 215)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f8hp0"]
+atlas = ExtResource("3_wupmx")
+region = Rect2(777, 220, 259, 215)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qb74t"]
+atlas = ExtResource("3_wupmx")
+region = Rect2(1036, 220, 259, 215)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjdh1"]
+atlas = ExtResource("3_wupmx")
+region = Rect2(1295, 220, 259, 215)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wpjx"]
+atlas = ExtResource("3_wupmx")
+region = Rect2(1554, 220, 259, 215)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4d5y8"]
+atlas = ExtResource("3_wupmx")
+region = Rect2(1813, 220, 259, 215)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_inglk"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5sl2t")
+"texture": SubResource("AtlasTexture_xxvu7")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ie7wc")
+"texture": SubResource("AtlasTexture_sfmb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pu8a2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f8hp0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qb74t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjdh1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wpjx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4d5y8")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"default",
 "speed": 5.0
 }]
 
@@ -40,38 +85,40 @@ script = ExtResource("2_fty84")
 [node name="killzone" parent="enemyBody2D" instance=ExtResource("3_5vly4")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D/killzone"]
-position = Vector2(0, 0.5)
+position = Vector2(-0.139839, 0.0976534)
 shape = SubResource("RectangleShape2D_o50dt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D"]
-position = Vector2(0, 0.5)
+position = Vector2(-0.15937, 0.0898409)
 shape = SubResource("RectangleShape2D_1lbav")
 
 [node name="RayCastRight" type="RayCast2D" parent="enemyBody2D"]
-position = Vector2(0, 2)
-target_position = Vector2(7, 0)
+position = Vector2(-0.9, 0)
+target_position = Vector2(3.58438, 0.0781221)
 
 [node name="RayCastLeft" type="RayCast2D" parent="enemyBody2D"]
-position = Vector2(0, 2)
-target_position = Vector2(-7, 0)
+position = Vector2(-0.1, 0)
+target_position = Vector2(-2.93437, -2.86102e-06)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="enemyBody2D"]
-sprite_frames = SubResource("SpriteFrames_kbvn8")
-animation = &"idle"
-autoplay = "idle"
-frame_progress = 0.780719
+position = Vector2(0, -1)
+scale = Vector2(0.0479006, 0.0443548)
+sprite_frames = SubResource("SpriteFrames_inglk")
+autoplay = "default"
+frame_progress = 0.833333
+flip_h = true
 
 [node name="groundCheck" type="Area2D" parent="enemyBody2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D/groundCheck" groups=["ground"]]
-position = Vector2(4, 7)
+position = Vector2(3, 4)
 shape = SubResource("CircleShape2D_5e1bx")
 
 [node name="groundCheck2" type="Area2D" parent="enemyBody2D"]
 position = Vector2(2, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemyBody2D/groundCheck2" groups=["ground"]]
-position = Vector2(-6, 7)
+position = Vector2(-5, 4)
 shape = SubResource("CircleShape2D_5e1bx")
 
 [node name="footsteps" type="AudioStreamPlayer2D" parent="."]

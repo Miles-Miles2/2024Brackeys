@@ -1,9 +1,9 @@
 extends Node2D
 
-@onready var ray_cast_right = $enemyBody2D/RayCastRight
-@onready var ray_cast_left = $enemyBody2D/RayCastLeft
-@onready var slime = $enemyBody2D/AnimatedSprite2D
-@onready var body = $enemyBody2D
+@onready var ray_cast_right = $RayCastRight
+@onready var ray_cast_left = $RayCastLeft
+@onready var slime = $AnimatedSprite2D
+@onready var body = $"."
 @onready var footsteps = $footsteps
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -11,8 +11,6 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 
 @export var SPEED = 1500
-
-@export var speedMult: float = 1
 
 
 
@@ -28,32 +26,22 @@ func _physics_process(delta):
 		
 		if ray_cast_right.is_colliding():
 			direction = -1
-			slime.flip_h = true
+			slime.flip_h = not(slime.flip_h)
 			
 			
 		if ray_cast_left.is_colliding():
 			direction = 1
-			slime.flip_h = false
+			slime.flip_h = not(slime.flip_h)
 			
 
-		body.velocity.x = (SPEED * speedMult * delta * direction)
-		
-		if speedMult > 1:
-			slime.speed_scale = 1.7
-			footsteps.pitch_scale = 1.7
-		elif speedMult < 1:
-			slime.speed_scale = .8
-			footsteps.pitch_scale = .8
-			
-		else:
-			slime.speed_scale = 1
-			footsteps.pitch_scale = 1
+		body.velocity.x = (SPEED * delta * direction)
+
 		
 
 		body.move_and_slide()
 
 
 func _on_ground_check_body_exited(collidedBody: Node2D) -> void:
-	if (collidedBody.is_in_group("ground")) and speedMult <= 1:
+	if (collidedBody.is_in_group("ground")):
 		slime.flip_h = not(slime.flip_h)
 		direction *= -1
