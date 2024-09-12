@@ -82,18 +82,26 @@ func _physics_process(delta):
 	if direction and dashTime <= 0:
 		if is_on_floor():
 			velocity.x = direction * SPEED
-		else:
+		elif abs(velocity.x) < SPEED or abs(velocity.x + direction*delta*2000) < abs(velocity.x):
+			velocity.x += direction*delta*1000
+			
+			#OLD CODE - allow speedup past max speed
+			'''
 			if abs(velocity.x + (direction * SPEED*0.1)) < SPEED:
 				velocity.x += direction * SPEED * 0.1 #min((direction * SPEED)*0.01, direction*SPEED - velocity.x)
 			elif abs(velocity.x	 + (direction * SPEED)*0.01) < abs(velocity.x):
 				velocity.x += (direction * SPEED)*0.01
+			'''
 		
 	else:
 		if is_on_floor() and dashTime <= 0:
 			velocity.x = 0
-		else:
-			velocity.x *= 0.95
 			
+	#movement damping
+	if dashTime <= 0:
+		if abs(velocity.x) > SPEED:
+			velocity.x *= 0.9
+	
 	#   DASH
 	if Input.is_action_just_pressed("dash") and canDash:
 		dashTime = 0.05
