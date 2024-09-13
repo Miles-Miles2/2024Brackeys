@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dpj5chc3oslpr"]
+[gd_scene load_steps=5 format=3 uid="uid://dillj1cli5csl"]
 
 [ext_resource type="TileSet" uid="uid://cvybiv4kqocla" path="res://Assets/pico8.tres" id="1_opwwk"]
 [ext_resource type="PackedScene" uid="uid://cyl81q57f0qx2" path="res://Scenes/camera.tscn" id="2_cg3hi"]
-[ext_resource type="PackedScene" path="res://Assets/player.tscn" id="3_c55b0"]
+[ext_resource type="PackedScene" uid="uid://dmrjvpo3pd0qh" path="res://Assets/player.tscn" id="3_c55b0"]
 [ext_resource type="PackedScene" uid="uid://bwktujbfadlfs" path="res://Scenes/enemy.tscn" id="4_0u4w7"]
 
 [node name="Node2D" type="Node2D"]

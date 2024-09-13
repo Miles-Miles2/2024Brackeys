@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1j42vl11vors"]
+
+[ext_resource type="Script" path="res://tornadoScript.gd" id="1_p3iry"]
+[ext_resource type="Texture2D" uid="uid://bg3m4jmqymtsi" path="res://Assets/tmpWhirlwind.png" id="2_sqd5b"]
+
+[node name="Node2D" type="Area2D"]
+script = ExtResource("1_p3iry")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_sqd5b")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
