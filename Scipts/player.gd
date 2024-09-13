@@ -10,6 +10,7 @@ const JUMP_VELOCITY = -200.0
 @export var SPEED_MODIFIER = 1
 @export var MAX_QUICKSAND_SPEED: float
 
+var movementModifiers: Array = []
 
 
 var addVelocityDebounce: int = 0
@@ -35,6 +36,11 @@ var previouslyInAir = true
 
 
 func _physics_process(delta):
+	print(movementModifiers)
+	if len(movementModifiers) == 0:
+		normalMovement = true
+	else:
+		normalMovement = false
 	# Add the gravity.
 	addVelocityDebounce = max(0, addVelocityDebounce - 1)
 	
@@ -58,7 +64,7 @@ func _physics_process(delta):
 		previouslyInAir = true
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() and normalMovement:
 		jumpSFX.play()
 		velocity.y += JUMP_VELOCITY
 		
@@ -79,7 +85,7 @@ func _physics_process(delta):
 		canDash = true
 		if direction == 0:
 			pass
-			animated_sprite.play("idle")	
+			animated_sprite.play("idle")
 		else:
 			pass
 			animated_sprite.play("run")
@@ -106,11 +112,28 @@ func _physics_process(delta):
 			if is_on_floor() and dashTime <= 0:
 				velocity.x = 0
 	
-	if not normalMovement and isInQuicksand:
-		velocity.y += min(5, 15-velocity.y)
-		if Input.is_action_just_pressed("jump"):
-			velocity.y += JUMP_VELOCITY * 0.5
-		velocity.x += (direction*SPEED - velocity.x) * 0.2
+	if not normalMovement:
+		if isInQuicksand:
+			velocity.y += min(5, 15-velocity.y)
+			if Input.is_action_just_pressed("jump"):
+				velocity.y += JUMP_VELOCITY * 0.5
+			velocity.x += (direction*SPEED - velocity.x) * 0.2
+			#quicksand dash
+			if Input.is_action_just_pressed("dash"):
+				dashTime = 0.05
+				velocity.y = 0
+				velocity.x = 0
+				velocity += inputVector * DASH_VELOCITY
+				canDash = false
+				
+	if movementModifiers.has("whirlwind"):
+		velocity *= 0.9
+		if Input.is_action_just_pressed("dash") and canDash:
+				dashTime = 0.05
+				velocity.y = 0
+				velocity.x = 0
+				velocity += inputVector * DASH_VELOCITY
+				canDash = false
 	
 	#movement damping
 	if dashTime <= 0:
@@ -118,12 +141,13 @@ func _physics_process(delta):
 			velocity.x *= 0.9
 	
 	#   DASH
-	if Input.is_action_just_pressed("dash") and canDash:
+	if Input.is_action_just_pressed("dash") and canDash and normalMovement:
 		dashTime = 0.05
 		velocity.y = 0
 		velocity.x = 0
 		velocity += inputVector * DASH_VELOCITY
 		canDash = false
+		
 
 	move_and_slide()
 	
@@ -134,10 +158,22 @@ func _physics_process(delta):
 	
 func enterQuicksand():
 	velocity.y = clamp(velocity.y, 1000, MAX_QUICKSAND_SPEED)
+	movementModifiers.append("quicksand")
 	isInQuicksand = true
-	normalMovement = false
 	
 func exitQuicksand():
+	movementModifiers.erase("quicksand")
 	isInQuicksand = false
-	normalMovement = true
-	
+
+func addModifier(mod: String):
+	movementModifiers.append(mod)
+
+func removeModifier(mod: String):
+	movementModifiers.erase(mod)
+
+func setVel(vel: Vector2):
+	velocity = vel
+
+func addVel(vel: Vector2):
+	velocity += vel
+
