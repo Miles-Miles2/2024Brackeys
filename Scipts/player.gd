@@ -36,7 +36,6 @@ var previouslyInAir = true
 
 
 func _physics_process(delta):
-	print(movementModifiers)
 	if len(movementModifiers) == 0:
 		normalMovement = true
 	else:
