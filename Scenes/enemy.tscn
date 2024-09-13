@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://bwktujbfadlfs"]
+[gd_scene load_steps=17 format=3 uid="uid://bwktujbfadlfs"]
 
 [ext_resource type="Script" path="res://Scipts/enemy.gd" id="2_fty84"]
 [ext_resource type="PackedScene" uid="uid://bovq5nweho4yv" path="res://Scenes/killzone.tscn" id="3_5vly4"]
 [ext_resource type="Texture2D" uid="uid://b3s2nbktrv0ta" path="res://Assets/mummy_sprite_sheet_by_lightweightyeahbuddy_dg753r4.png" id="3_wupmx"]
+[ext_resource type="AudioStream" uid="uid://cdn6ok33pfdwy" path="res://Audio/SFX/318103-FUN_MONSTER_Mummy_muffled_moan_02.wav" id="4_wpcyx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o50dt"]
 size = Vector2(5.54688, 7.67969)
@@ -120,8 +121,8 @@ position = Vector2(2, 0)
 position = Vector2(-5, 4)
 shape = SubResource("CircleShape2D_5e1bx")
 
-[node name="footsteps" type="AudioStreamPlayer2D" parent="."]
-volume_db = -10.0
+[node name="Growl" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_wpcyx")
 autoplay = true
 
 [connection signal="animation_finished" from="enemyBody2D/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

@@ -1,9 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cl81ogok40y0b"]
+[gd_scene load_steps=6 format=3 uid="uid://kusrlfh3sb5x"]
 
 [ext_resource type="TileSet" uid="uid://cvybiv4kqocla" path="res://Assets/pico8.tres" id="1_hbjor"]
 [ext_resource type="PackedScene" uid="uid://cyl81q57f0qx2" path="res://Scenes/camera.tscn" id="2_apwla"]
-[ext_resource type="PackedScene" uid="uid://dmrjvpo3pd0qh" path="res://Assets/player.tscn" id="3_byio2"]
-[ext_resource type="PackedScene" uid="uid://d1j42vl11vors" path="res://Scenes/whirlwind.tscn" id="4_7f0cn"]
+[ext_resource type="PackedScene" path="res://Assets/player.tscn" id="3_byio2"]
+[ext_resource type="PackedScene" path="res://Scenes/whirlwind.tscn" id="4_7f0cn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u4g8r"]
 size = Vector2(34, 34)

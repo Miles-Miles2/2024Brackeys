@@ -6,7 +6,6 @@ extends Node2D
 @onready var body = $enemyBody2D
 @onready var footsteps = $footsteps
 @onready var player = $"../Player"
-@onready var slim = $"."
 
 @export var crystal_collected = false
 
@@ -27,8 +26,6 @@ func _physics_process(delta):
 	var mummy_x = body.global_position.x
 	var player_x = player.global_position.x
 	
-	print(player_x)
-	print(mummy_x)
 
 	if delay < 0.5:
 		delay += delta

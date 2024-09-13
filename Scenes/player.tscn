@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scipts/player.gd" id="1_4gsat"]
 [ext_resource type="Texture2D" uid="uid://k0sb7c72p5eb" path="res://Assets/tmpChar.png" id="2_kdvre"]
-[ext_resource type="AudioStream" uid="uid://b5wxxqfbtl5t" path="res://Audio/sfx_jump_07-80241.mp3" id="3_x1lgl"]
+[ext_resource type="AudioStream" uid="uid://b5wxxqfbtl5t" path="res://Audio/SFX/sfx_jump_07-80241.mp3" id="3_x1lgl"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ye5og"]
 animations = [{

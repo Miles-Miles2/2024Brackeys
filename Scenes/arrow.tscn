@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://k47mo32025p1"]
+
+[ext_resource type="Script" path="res://Arrow.gd" id="1_xkso3"]
+[ext_resource type="Texture2D" uid="uid://dprbqgv3m8syf" path="res://Assets/Bow and Arrows.png" id="2_4so5c"]
+[ext_resource type="PackedScene" uid="uid://bovq5nweho4yv" path="res://Scenes/killzone.tscn" id="3_2ycu8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0dklv"]
+size = Vector2(16, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cystm"]
+atlas = ExtResource("2_4so5c")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gaf51"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cystm")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_euk8w"]
+size = Vector2(15.4688, 6.39062)
+
+[node name="Arrow" type="Node2D"]
+script = ExtResource("1_xkso3")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="killzone" parent="CharacterBody2D" instance=ExtResource("3_2ycu8")]
+position = Vector2(-4, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/killzone"]
+position = Vector2(4, 0.5)
+shape = SubResource("RectangleShape2D_0dklv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+texture_filter = 1
+position = Vector2(0, 1)
+sprite_frames = SubResource("SpriteFrames_gaf51")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(0.0343704, 0.473434)
+shape = SubResource("RectangleShape2D_euk8w")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
