@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dw4ktyk1uh5dj"]
+
+[ext_resource type="Texture2D" uid="uid://c67vii4lp7pgw" path="res://Assets/spike.png" id="1_avh7w"]
+[ext_resource type="PackedScene" uid="uid://bovq5nweho4yv" path="res://Scenes/killzone.tscn" id="2_co3yv"]
+[ext_resource type="Script" path="res://Scipts/spike_block.gd" id="2_ud0hr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gqt67"]
+size = Vector2(16, 16)
+
+[node name="SpikeBlock" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_avh7w")
+script = ExtResource("2_ud0hr")
+
+[node name="killzone" parent="." instance=ExtResource("2_co3yv")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
+shape = SubResource("RectangleShape2D_gqt67")
+
+[node name="collision" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="collision"]
+shape = SubResource("RectangleShape2D_gqt67")
+
+[connection signal="body_entered" from="killzone" to="." method="_on_killzone_body_entered"]
+[connection signal="body_entered" from="collision" to="." method="_on_collision_body_entered"]
