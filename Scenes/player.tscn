@@ -76,7 +76,7 @@ radius = 1.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 1
-collision_layer = 2
+collision_layer = 3
 script = ExtResource("1_4gsat")
 DASH_VELOCITY = 250.0
 

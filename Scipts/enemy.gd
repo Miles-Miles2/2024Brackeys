@@ -8,16 +8,14 @@ extends Node2D
 @onready var player = $"../Player"
 @onready var slim = $"."
 
-
-
-@export var crystal_collected = true
+@export var crystal_collected = false
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 #signal animation_done
 
 
 @export var SPEED = 1500
-
+var gemspeed = 1
 
 
 var direction = -1
@@ -25,11 +23,11 @@ var delay = 0
 	
 func _physics_process(delta):
 	
-
+	
 	var mummy_x = body.global_position.x
 	var player_x = player.global_position.x
 	
-	print (player_x)
+	print(player_x)
 	print(mummy_x)
 
 	if delay < 0.5:
@@ -50,6 +48,7 @@ func _physics_process(delta):
 				
 		
 		else:
+			gemspeed = 2
 			if (player_x < mummy_x):
 				direction = -1
 				slime.flip_h = false
@@ -59,7 +58,7 @@ func _physics_process(delta):
 				direction = 1
 				slime.flip_h = true
 			
-		body.velocity.x = (SPEED * delta * direction)
+		body.velocity.x = ((SPEED * gemspeed) * delta * direction)
 			
 
 		
