@@ -2,7 +2,7 @@
 
 [ext_resource type="TileSet" uid="uid://cvybiv4kqocla" path="res://Assets/pico8.tres" id="1_adbio"]
 [ext_resource type="PackedScene" uid="uid://cyl81q57f0qx2" path="res://Scenes/camera.tscn" id="2_byd27"]
-[ext_resource type="PackedScene" path="res://Assets/player.tscn" id="3_412d2"]
+[ext_resource type="PackedScene" uid="uid://dmrjvpo3pd0qh" path="res://Assets/player.tscn" id="3_412d2"]
 [ext_resource type="PackedScene" uid="uid://k47mo32025p1" path="res://Scenes/arrow.tscn" id="4_q57o3"]
 
 [node name="arrowTest" type="Node2D"]
